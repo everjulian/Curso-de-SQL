@@ -1,0 +1,152 @@
+Ordenamiento con ORDER BY
+Permite ordenar lo que que queremos 
+- SELECT * FROM Products ORDER BY Price  ASC
+- SELECT * FROM Products ORDER BY Price  DESC
+
+--Cláusula WHERE
+Nos permite buscar un campo espesifico de lo que quermeos hacer 
+SELECT * FROM Products WHERE Price >=10
+
+-- COMBINACION DE OPERADORES AND(Y)-OR(Cumple una o la otra)-NOT(No incluye)
+SELECT * FROM Products 
+WHERE  NOT CategoryID = 6
+AND SupplierID = 1 
+AND Price <=30  16:12 17/4/2023
+ORDER BY random()LIMIT 3
+
+--DISTINTO vs NOT
+Es operador  de comparacion compara 2 valores 
+SELECT * FROM Customers WHERE Country != "USA"
+SELECT * FROM Customers WHERE NOT Country = "USA"
+
+--Operador Between 
+Nos ayuda aver diferentes rangos entre una y otra cosa  y fechas 
+SELECT * FROM Products WHERE Price BETWEEN 20 AND 40
+SELECT * FROM Employees WHERE BirthDate BETWEEN "1950-0-1" AND "1960-0-1"
+
+--Operador LIKE 
+Comodin 1  % verifica si tienen algo, empieza o termina[%kj%, %f, d%]
+SELECT *FROM Employees WHERE LastName Like "F%"
+Comodin 2 _
+Busqueda por patron de texto 
+SELECT *FROM Employees WHERE LastName Like "FULL__"
+Ejemplos
+*SELECT *FROM Employees WHERE LastName Like "%a%" AND LastName like "%c%"
+*SELECT *FROM Employees WHERE LastName Like "%a%" OR LastName like "%c%"
+
+--IS NULL & IS NOT NULL
+Me devulve los valores que no son nulos
+SELECT * FROM Products 
+WHERE ProductName IS NOT NULL
+ORDER  BY  ProductName ASC
+
+--Operador IN y NOT IN
+Consiste en poder la catidad de datos que quiero mostrar 
+SELECT * FROM  Products WHERE SupplierID IN (3,4,5)
+SELECT * FROM  Products WHERE SupplierID  NOT IN (3,4,5)
+SELECT * FROM  Products WHERE Price IN (20,10,35) OR CategoryID  IN(3,5,4,2)
+
+--Funciones de Agregación 
+Es lantidd de produtos 
+SELECT  count(FirstName) AS Cantidad_de_productos FROM Employees
+La suma de productos 
+SELECT sum(Price) FROM Products
+El promedio de todo 
+SELECT avg (Price)FROM Products
+Se redonde un valor tambien podemos redondear el promedio y poner los decimales que queramos 
+SELECT round (avg(Price),2)as Promedio FROM Products
+Nos muesta el precio minimo
+SELECT min (Price)FROM Products WHERE ProductName IS NOT NULL
+El precio maximo 
+SELECT max (Price)FROM Products WHERE ProductName IS NOT NULL
+
+--GROUP BY y HAVING
+Permite a grupar diferetes cosas 
+SELECT SupplierID,round (avg (Price)) as promedio FROM Products 
+WHERE SupplierID  IS NOT NULL
+GROUP by SupplierID
+
+--HAVING
+Esto permite trabajar por grupos que son parte de una funcion 
+SELECT SupplierID,round (avg (Price)) as promedio FROM Products 
+WHERE SupplierID  IS NOT NULL
+GROUP by SupplierID
+HAVING promedio > 40
+ORDER by  promedio 
+
+--Subconsultas (subqueries)
+SELECT ProductID,
+     Quantity,
+	 (SELECT ProductName from Products WHERE OrderDetails.ProductID = ProductID) as nombre_productos,
+	 (SELECT Price from Products WHERE OrderDetails.ProductID = ProductID) as precio
+
+     FROM OrderDetails
+
+--- ejercicio de  subconsulta
+--Obtener los empleados que lograron vender mas unidades que el promedio 
+  SELECT FirstName,LastName,
+  (SELECT sum(od.Quantity) FROM [Orders] o,[OrderDetails] od
+  WHERE o.EmployeeID = e.EmployeeID AND od.OrderID = o.OrderID
+  
+  ) as  unidades_totales
+
+  FROM [Employees]e
+  WHERE unidades_totales > (SELECT avg ( unidades_totales) FROM (
+  SELECT(SELECT sum(od.Quantity) FROM [Orders] o,[OrderDetails] od
+  WHERE o.EmployeeID = e2.EmployeeID AND od.OrderID = o.OrderID) as unidades_totales FROM [Employees] e2
+  GROUP by e2.EmployeeID
+  
+  
+  ))
+
+--Joins  
+Combinacion de 2 tablas y ponerle un una sola tabla
+*INNER JOIN
+seleciona los datos  que coicida de acuerdo a la condicion 
+SELECT * FROM Employees e
+INNER JOIN Orders O on e.EmployeeID = o.EmployeeID
+
+*LEFT JONI
+Me muestar una parte de la otra tabla
+SELECT FirstName,Reward,Month FROM Employees e
+LEFT JOIN Rewards r ON e. EmployeeID = r.EmployeeID  
+*RIGHT JOIN
+Se invierte la tabala 
+SELECT FirstName,Reward,Month FROM Rewards e
+LEFT JOIN Employees r ON e. EmployeeID = r.EmployeeID
+*FULL JOIN
+Muestran todos los datos 
+SELECT FirstName,Reward,Month FROM Employees e
+LEFT JOIN Rewards r ON e. EmployeeID = r.EmployeeID
+
+UNION
+
+SELECT FirstName,Reward,Month FROM Rewards e
+LEFT JOIN Employees r ON e. EmployeeID = r.EmployeeID
+*CROSS JOIN
+Mezcla todoas las posiciones que existen en 2 filas 
+SELECT * FROM Employees e
+CROSS JOIN Orders O
+
+--UNION 
+No repite datos 
+-- UNION ALL
+--Mustra todos los tados 
+
+--Índices 
+Nos permite buscar mas rapido lo de la tablas
+CREATE UNIQUE INDEX nombre on Products(ProductName)
+CREATE UNIQUE INDEX name on Employees(FirstName,LastName)
+
+--vistas
+Nos permite obtimizar una consulta  creado 
+SELECT * from products_simplificado
+DROP VIEW IF EXISTS products_simplificado
+DROP VIEW  products_simplificado
+
+--Bloqueos y transacciones 
+BEGIN
+COMMIT
+ROLLBACK
+
+

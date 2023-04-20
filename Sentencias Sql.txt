@@ -1,0 +1,103 @@
+CREACION TERMINAL:
+\l : ver las tabals 
+CREATE DATA BASE prueba;
+\c prueba = esto sirve para concetar en la base 
+
+-----------------------------------------------
+
+CREATE TABLE personas (
+nombre_persona VARCHAR(100) NOT NULL,
+edad_persona INT,
+genero_persona VARCHAR(30) NOT NULL,
+ID_PERSONA SERIAL,
+PRIMART KEY (ID_PERSONA)
+);
+
+SELECT * FROM persona
+-------------------------------------------
+CREATE TABLE tareas (
+id_tareas SERIAL PRIMARY KEY,
+titulo VARCHAR(50) NOT NULL,
+fecha DATE DEFAULT CURRENT_DATE,
+estado BOOLEAN DEFAUL false,
+id_usuario int,
+FOREIGN KEY (id_usuario) REFERENCES personas(id_personas)
+
+);
+
+---INSERT INTO persona()
+
+SELECT * FROM tareas 
+
+CREATE TABLE: SE CREAN TABLAS
+CREATE TABLE USUARIO(
+    NOMBRE_USUARIO VARCHAR (50) NOT NULL,
+    EDAD_USUARIO INT,
+    DESCRIPCION_USUARIO TEXT,
+    ID_USUARIO SERIAL,
+    PRIMARY KEY (ID_USUARIO)
+);
+DONDE TIENEN QUE IR LOS ATRIBUTOS 
+
+NOT NULL: DATOS IMPORTANTES
+NOT: DAROS QUE NO SON NECESARIOS
+
+CONSTRAINT: PERMITE SABER QUE TIENE FOREIGY Y TIENE UN NOMBRE Y DE 
+DONDE VIENE. 
+
+--/* sentencia para renombrar una columna*/
+ALTER TABLE genero
+ RENAME COLUMN DETALLE_GENERO TO DETALLE_GENERO_NUEVO;
+
+--/* sentencia para elimiar una columna*/
+ALTER TABLE genero 
+DROP column  detalle_genero
+
+
+/**SENTENCIA PARA ELIMINAR UNA TABLA*/
+
+drop table TRANSMITE_PELICULA
+
+--AÑADIR COLUMNAS 
+ESTO AYUDA PARA PONER DATOS QUE NOS FLATAN (ATRIBUTOS)
+ALTER TABLE PERSONAJE
+ADD RECOMENDACION  VARCHAR()50;
+
+--MODIFICAR COLUMNA 2 EJEMPLOS 
+MODIFICAMOS PROPIDADES COMO VARVHAR A TEXT O ENTR OTROS
+ALTER TABLE PERSONAJE
+ALTER COLUMN RECOMENDACION SET DATA TYPE TEXT;
+
+--INGRESAR DATOS EN LA TABLA 5 EJEMPLOS (NOMBRE DE LA TABLA, ATRIBUTOS Y LOS VALORES)
+INSERT INTO PERSONAJE(ID_PERSONAJE,NOMBRE_PERSONAJE,APELLIDO_PERSONAJE,ID_PAPEL_FK)
+VALUES(1,'JUAN','CABEZAS',2)
+
+-- UPDATE 3 EJEMPLOS (PONER DATOS QUE NOS FALTAN )
+UPDATE PERSONAJE
+SET CRITICA = 'MEJORAR INTRO' WHERE ID_PERSONAJE = 5;
+
+/* sentencia para actulizar los campos que esten vacios
+ **/
+ UPDATE personaje2
+SET alias_personaje = 'esta campo estaba vacio'
+WHERE alias_personaje IS NULL;
+‬
+
+alter table personaje2 alter column alias_personaje  set not null  
+
+--DELETE 1 EJEMPLOS (ELIMINAR DATOS INPORTANTE PONER WHERE)
+* para crear las tablas se debe crear primero las tablas padres y las tablas hijas*/
+/* para eliminar las tablas se debe borrar primero a las tablas hijas y luego a las padres*/
+-- 
+--ELIMINAR DATOS DE LA TABLA
+    --SE DESEA ELIMINAR EL PAPEL QUE SE LLAMA EXTRAS 2
+    
+    delete from PAPEL where id_papel=5
+    
+ --SE DESEA ELIMINAR LA COLUMNA  PAPEL QUE tiene como id=1
+   delete from PAPEL where id_papel=1
+
+--SE DESEA OBTENER UN REPORTE DE LA TABLA PELICULAS DONDE EL DIRECTOR SEA JOSE Y EL GENERO SEA DRAMA 
+select * from pelicula p  where id_director_fk =2 and id_genero_fk =1
+
+DELETE FROM PERSONAJE  WHERE ID_PERSONAJE = 3;
